@@ -23,22 +23,12 @@ const usersSchema = new Schema(
       type: String,
       required: false,
       enum: ['woman', 'man'],
-      default: 'woman',
+      default: 'man',
     },
-    weight: {
+    monthlyIncome: {
       type: Number,
       required: false,
-      default: 0,
-    },
-    activeTime: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    dailyNorm: {
-      type: Number,
-      required: false,
-      default: 1500,
+      default: 30000,
     },
   },
   {
