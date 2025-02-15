@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: AquaTrack
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is a documentation of AquaTrack app
+tags:
+  - name: Water
+    description: Operations with water.
+  - name: Users
+    description: Operations with users.
+servers:
+  - url: https://aquatrack-01.onrender.com
+paths:
+  /users/register:
+    post:
+      $ref: ../swagger/paths/users/register/post.yaml
+  /users/login:
+    post:
+      $ref: ../swagger/paths/users/login/post.yaml
+  /users/logout:
+    post:
+      $ref: ../swagger/paths/users/logout/post.yaml
+  /users/refresh:
+    post:
+      $ref: ../swagger/paths/users/refresh/post.yaml
+  /users/current:
+    get:
+      $ref: ../swagger/paths/users/current/get.yaml
+  /users/update:
+    patch:
+      $ref: ../swagger/paths/users/update/patch.yaml
+  /users/count:
+    get:
+      $ref: ../swagger/paths/users/count/get.yaml
+  /water:
+    post:
+      $ref: ../swagger/paths/water/post.yaml
+  /water/{waterId}:
+    patch:
+      $ref: ../swagger/paths/water/{waterId}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/water/{waterId}/delete.yaml
+  /water/day/{date}:
+    get:
+      $ref: ../swagger/paths/water/day/get.yaml
+  /water/month/{date}:
+    get:
+      $ref: ../swagger/paths/water/month/get.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
