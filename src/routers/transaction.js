@@ -9,6 +9,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import {
   addTransaction,
   deleteTransaction,
+  getIncomeAndExpenses,
   getTransactionsByMonth,
   updateTransaction,
 } from '../controllers/transaction.js';
@@ -22,7 +23,9 @@ router.post(
   validateBody(createTransactionSchema),
   ctrlWrapper(addTransaction),
 );
-router.get('/', ctrlWrapper(getTransactionsByMonth));
+router.get('/summary', authenticate, ctrlWrapper(getTransactionsByMonth));
+router.get('/income-expenses', authenticate, ctrlWrapper(getIncomeAndExpenses));
+
 router.patch(
   '/:id',
   authenticate,

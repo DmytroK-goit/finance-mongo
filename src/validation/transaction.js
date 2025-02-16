@@ -1,15 +1,31 @@
 import Joi from 'joi';
 
+const validCategories = [
+  'Auto',
+  'Food',
+  'Clothing',
+  'Home expenses',
+  'Entertainment',
+  'Health',
+  'Transport',
+  'Education',
+  'Other',
+  'Salary',
+  'Credit',
+];
+
 export const createTransactionSchema = Joi.object({
   type: Joi.string().valid('income', 'expense').required().messages({
     'any.only': "Type must be 'income' or 'expense'",
     'any.required': 'Type is required',
   }),
-  category: Joi.string().min(3).max(50).required().messages({
-    'string.min': 'Category must be at least 3 characters',
-    'string.max': 'Category must not exceed 50 characters',
-    'any.required': 'Category is required',
-  }),
+  category: Joi.string()
+    .valid(...validCategories)
+    .required()
+    .messages({
+      'any.only': `Category must be one of: ${validCategories.join(', ')}`,
+      'any.required': 'Category is required',
+    }),
   amount: Joi.number().min(1).required().messages({
     'number.min': 'Amount must be at least 1',
     'any.required': 'Amount is required',
@@ -28,8 +44,13 @@ export const createTransactionSchema = Joi.object({
 
 export const updateTransactionSchema = Joi.object({
   type: Joi.string().valid('income', 'expense').optional(),
-  category: Joi.string().optional(),
-  amount: Joi.number().optional(),
+  category: Joi.string()
+    .valid(...validCategories)
+    .optional()
+    .messages({
+      'any.only': `Category must be one of: ${validCategories.join(', ')}`,
+    }),
+  amount: Joi.number().min(1).optional(),
   date: Joi.date().optional(),
-  description: Joi.string().optional(),
+  description: Joi.string().max(200).optional(),
 });

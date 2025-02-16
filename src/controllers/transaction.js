@@ -1,5 +1,6 @@
 import { Transaction } from '../db/models/transaction.js';
 import { createTransaction } from '../services/transaction.js';
+import { calculateIncomeAndExpenses } from '../utils/calculateIncomeAndExpenses.js';
 
 export const addTransaction = async (req, res) => {
   try {
@@ -32,13 +33,40 @@ export const getTransactionsByMonth = async (req, res) => {
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + 1);
 
-    const transactions = await Transaction.find({
+    const incomeTransactions = await Transaction.find({
+      type: 'income',
       date: { $gte: startDate, $lt: endDate },
     });
 
-    res.json(transactions);
+    const expenseTransactions = await Transaction.find({
+      type: 'expense',
+      date: { $gte: startDate, $lt: endDate },
+    });
+
+    res.json({
+      income: incomeTransactions,
+      expenses: expenseTransactions,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+export const getIncomeAndExpenses = async (req, res) => {
+  try {
+    const { year } = req.query;
+
+    if (!year) {
+      return res.status(400).json({ message: 'Year is required' });
+    }
+
+    const result = await calculateIncomeAndExpenses(year);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error calculating income and expenses',
+      error: error.message,
+    });
   }
 };
 
