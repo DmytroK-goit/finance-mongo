@@ -1,6 +1,6 @@
 import { Transaction } from '../db/models/transaction.js';
 
-export const calculateIncomeAndExpenses = async (year) => {
+export const calculateIncomeAndExpenses = async (year, userId) => {
   try {
     const parsedYear = parseInt(year, 10);
     if (isNaN(parsedYear)) {
@@ -16,6 +16,7 @@ export const calculateIncomeAndExpenses = async (year) => {
     const totalIncomeAndExpenses = await Transaction.aggregate([
       {
         $match: {
+          userId: userId,
           date: { $gte: startDate, $lt: endDate },
         },
       },
@@ -30,6 +31,7 @@ export const calculateIncomeAndExpenses = async (year) => {
     const monthlyIncomeAndExpenses = await Transaction.aggregate([
       {
         $match: {
+          userId: userId,
           date: { $gte: startDate, $lt: endDate },
         },
       },
