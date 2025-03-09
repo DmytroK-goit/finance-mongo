@@ -34,15 +34,16 @@ export const getTransactionsByMonth = async (req, res) => {
     endDate.setMonth(endDate.getMonth() + 1);
 
     const incomeTransactions = await Transaction.find({
+      userId: req.user._id,
       type: 'income',
       date: { $gte: startDate, $lt: endDate },
     });
 
     const expenseTransactions = await Transaction.find({
+      userId: req.user._id,
       type: 'expense',
       date: { $gte: startDate, $lt: endDate },
     });
-
     res.json({
       income: incomeTransactions,
       expenses: expenseTransactions,
@@ -55,12 +56,14 @@ export const getTransactionsByMonth = async (req, res) => {
 export const getIncomeAndExpenses = async (req, res) => {
   try {
     const { year } = req.query;
-
     if (!year) {
       return res.status(400).json({ message: 'Year is required' });
     }
-
-    const result = await calculateIncomeAndExpenses(year);
+    if (!req.user) {
+      return res.status(401).json({ message: 'Користувач не авторизований' });
+    }
+    const userId = req.user._id;
+    const result = await calculateIncomeAndExpenses(year, userId);
     res.json(result);
   } catch (error) {
     res.status(500).json({
