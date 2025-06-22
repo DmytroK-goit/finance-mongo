@@ -25,10 +25,10 @@ const usersSchema = new Schema(
       enum: ['woman', 'man'],
       default: 'man',
     },
-    monthlyIncome: {
+    profitTargetMonth: {
       type: Number,
       required: false,
-      default: 30000,
+      default: 5000,
     },
   },
   {

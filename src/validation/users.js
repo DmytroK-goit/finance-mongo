@@ -15,6 +15,8 @@ export const updateUserSchema = Joi.object({
   name: Joi.string(),
   gender: Joi.string().valid('woman', 'man'),
   weight: Joi.number(),
+  profitTargetMonth: Joi.number().default(5000),
+  avatar: Joi.string(),
   activeTime: Joi.number(),
   dailyNorm: Joi.number(),
 });
